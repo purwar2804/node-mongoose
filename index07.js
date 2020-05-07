@@ -1,16 +1,16 @@
 const mongoose=require('mongoose');
 const Dishes=require('./models/dishes');
+const url='mongodb://localhost:27017/conFusion';
 
-const url='mongodb://localhost:27017/conFusion'
-
-const connect=mongoose.connect(url);
+const connect=mongoose.connect(url)
 connect.then((db)=>{
-	console.log('connect correctly to server');
-	var newDish=Dishes({
+	console.log('connected correctly to server');
+	Dishes.create({
 		name:'uthapizza',
 		description:'test'
 	})
-	newDish.save()
+
+	
 	.then((dish)=>{
 		console.log(dish);
 		return Dishes.find({}).exec();

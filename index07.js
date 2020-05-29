@@ -4,23 +4,34 @@ const url='mongodb://localhost:27017/conFusion';
 
 const connect=mongoose.connect(url)
 connect.then((db)=>{
-	console.log('connected correctly to server');
+	console.log('conenct correctly to server');
 	Dishes.create({
-		name:'uthapizza',
+		name:'uthapuiza',
 		description:'test'
 	})
-
-	
 	.then((dish)=>{
 		console.log(dish);
-		return Dishes.find({}).exec();
+		return Dishes.findByIdAndUpdate(dish._id,{
+			$set:{description:'update test'}
+		},
+		{new:true
+		})
 	})
-	.then((dishes)=>{
-		console.log(dishes);
+	.then((dish)=>{
+		console.log(dish);
+		dish.comments.push({
+			rating:5,
+			comment:'I am getting the sinking feeling',
+			author:'utkarsh'
+		})
+		return dish.save();
+	})
+	.then((dish)=>{
+		console.log(dish);
 		return Dishes.remove();
 	})
 	.then(()=>{
-		mongoose.connection.close();
+		return mongoose.connection.close();
 	})
 	.catch((err)=>{
 		console.log(err);
